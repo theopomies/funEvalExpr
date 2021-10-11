@@ -46,6 +46,3 @@ lexerSpec = describe "Test for lexer module: " $ do
     tokenize "(1 + 2) / 5 + 3.24 ^ 3.5 * 42" == [OpenParenthesis, Number 1, PlusSign, Number 2, CloseParenthesis, DivideSign, Number 5, PlusSign, Number 3.24, PowerSign, Number 3.5, MultiplySign, Number 42]
   it "tokenizes the subjects operation" $ do
     tokenize "(0.345+ 5 )*( -2-1) / 3" == [OpenParenthesis, Number 0.345, PlusSign, Number 5, CloseParenthesis, MultiplySign, OpenParenthesis, MinusSign, Number 2, MinusSign, Number 1, CloseParenthesis, DivideSign, Number 3]
-
---   it "Invalid random expression" $ do
---     evaluate (tokenize "certes oui oui") `shouldThrow` (== LexingException "A value entered was not a valid double.")

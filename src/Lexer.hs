@@ -14,7 +14,7 @@ data Token
   | OpenParenthesis
   | CloseParenthesis
   | Number Double
-  deriving Show
+  deriving (Show)
 
 type Tokens = [Token]
 
