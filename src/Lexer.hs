@@ -1,4 +1,4 @@
-module Lexer (Token (..)) where
+module Lexer (Token (..), tokenize) where
 
 import Control.Exception.Base (throw)
 import Data.Char (isDigit)
@@ -14,6 +14,7 @@ data Token
   | OpenParenthesis
   | CloseParenthesis
   | Number Double
+  deriving Show
 
 type Tokens = [Token]
 

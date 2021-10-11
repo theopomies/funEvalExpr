@@ -1,2 +1,6 @@
+import Test.Hspec ( hspec )
+import LexerSpec ( lexerSpec )
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = hspec $ do
+    lexerSpec

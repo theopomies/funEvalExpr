@@ -7,7 +7,7 @@ data EvalExprException
   = ParsingException String
   | LexingException String
   | ComputingException String
-  deriving (Show)
+  deriving (Show, Eq)
 
 instance Exception EvalExprException
 
