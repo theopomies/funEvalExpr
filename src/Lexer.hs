@@ -1,4 +1,4 @@
-module Lexer (Token (..), tokenize) where
+module Lexer (Token (..), Tokens, tokenize) where
 
 import Control.Exception.Base (throw)
 import Data.Char (isDigit)
@@ -14,6 +14,7 @@ data Token
   | OpenParenthesis
   | CloseParenthesis
   | Number Double
+  deriving (Eq)
 
 type Tokens = [Token]
 
@@ -31,7 +32,7 @@ tokenize str = tokenizeNumber (fst . extractMaybeDouble $ str) : tokenize (snd .
 
 tokenizeNumber :: Maybe Double -> Token
 tokenizeNumber (Just value) = Number value
-tokenizeNumber _ = throw $ LexingException "A value entered was not a valid double."
+tokenizeNumber _ = throw $ LexingException "A value entered was not a valid token."
 
 extractMaybeDouble :: String -> (Maybe Double, String)
 extractMaybeDouble str = let (numberStr, rest) = extractMaybeDoubleAsString str in (readMaybe numberStr, rest)

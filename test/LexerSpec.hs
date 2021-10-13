@@ -1,7 +1,6 @@
 module LexerSpec (lexerSpec) where
 
 import Control.Exception (evaluate)
-import Error (EvalExprException (LexingException))
 import Lexer (Token (CloseParenthesis, DivideSign, MinusSign, MultiplySign, Number, OpenParenthesis, PlusSign, PowerSign), tokenize)
 import Test.Hspec (Spec, describe, it, shouldThrow)
 
