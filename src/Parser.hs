@@ -5,22 +5,22 @@ import GHC.Exception (throw)
 import Lexer (Token (..), Tokens)
 
 data Expression
-  = Add Term Term
+  = Expression Term
+  | Add Term Term
   | Sub Term Term
-  | Expression Term
 
 data Term
-  = Mul Factor Factor
+  = Term Factor
+  | Mul Factor Factor
   | Div Factor Factor
-  | Term Factor
 
 data Factor
   = Factor Power
   | Pow Power Factor
 
 data Power
-  = Value Double
-  | Power Expression
+  = Power Expression
+  | Value Double
   | Neg Expression
   | Pos Expression
 
@@ -58,6 +58,6 @@ parsePower (OpenParenthesis : xs)
   | null (snd . parseExpression $ xs) = throw $ ParsingException "An open parenthesis was not closed."
   | head (snd . parseExpression $ xs) == CloseParenthesis = let (expression, restTokens) = parseExpression xs in (Power expression, tail restTokens)
   | otherwise = throw $ ParsingException "An open parenthesis was not closed.2"
-parsePower (MinusSign : xs) = let (power, restTokens) = parsePower xs in (Neg . Expression . Term . Factor $ power, restTokens)
-parsePower (PlusSign : xs) = let (power, restTokens) = parsePower xs in (power, restTokens)
+parsePower (MinusSign : xs) = let (factor, restTokens) = parseFactor xs in (Neg . Expression . Term $ factor, restTokens)
+parsePower (PlusSign : xs) = let (factor, restTokens) = parseFactor xs in (Power . Expression . Term $ factor, restTokens)
 parsePower _ = throw $ ParsingException "The expression provided was invalid."
