@@ -2,7 +2,7 @@
 ## EPITECH PROJECT, 2021
 ## makefile
 ## File description:
-## wolfram
+## funEvalExpr
 ##
 
 MAKEFLAGS	+=	--no-print-directory -j
@@ -14,10 +14,10 @@ all:
 			cp $(BINARY_PATH)/bin/$(BINARY_NAME)-exe ./$(BINARY_NAME)
 
 clean:
+			stack purge
 			stack clean
 
 fclean: 	clean
-			stack purge
 			rm -f $(BINARY_NAME)
 
 tests_run: clean
