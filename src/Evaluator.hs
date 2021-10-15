@@ -1,15 +1,26 @@
 module Evaluator where
 
-import Parser (ExpressionTree(..), BinaryOperation(..), UnaryOperation(..))
-import Data.Char (GeneralCategory(ModifierSymbol))
+import Parser (Expression(..), Term(..), Factor(..), Power(..))
+import Error ( EvalExprException(ComputingException) )
 
-evaluate :: ExpressionTree -> Double
-evaluate (Leaf num) = num
-evaluate (BinaryNode Add lhs rhs) = evaluate lhs + evaluate rhs
-evaluate (BinaryNode Sub lhs rhs) = evaluate lhs - evaluate rhs
-evaluate (BinaryNode Mul lhs rhs) = evaluate lhs * evaluate rhs
-evaluate (BinaryNode Div lhs rhs) = evaluate lhs / evaluate rhs
-evaluate (BinaryNode Pow lhs rhs) = evaluate lhs ** evaluate rhs
-evaluate (UnaryNode Neg rhs) = -(evaluate rhs)
-evaluate (UnaryNode Pos rhs) = evaluate rhs
-evaluate (ProtectedNode tree) = evaluate tree
+evaluate :: Expression -> Double
+evaluate (Add lhs rhs) = evaluateTerm lhs + evaluateTerm rhs
+evaluate (Sub lhs rhs) = evaluateTerm lhs - evaluateTerm rhs
+evaluate (Expression rhs) = evaluateTerm rhs
+
+evaluateTerm :: Term -> Double
+evaluateTerm (Term term) = evaluateFactor term
+evaluateTerm (Mul lhs rhs) = evaluateFactor lhs * evaluateFactor rhs
+evaluateTerm (Div lhs rhs)
+    | evaluateFactor rhs == 0 = throw $ ComputingException "Cannot divide by 0"
+    | otherwise = evaluateFactor lhs / evaluateFactor rhs
+
+evaluateFactor :: Factor -> Double
+evaluateFactor (Factor factor) = evaluatePower factor
+evaluateFactor (Pow lhs rhs) = evaluatePower lhs ** evaluateFactor rhs
+
+evaluatePower :: Power -> Double
+evaluatePower (Value val) = val
+evaluatePower (Power expr) = evaluate expr
+evaluatePower (Neg expr) = - evaluate expr
+evaluatePower (Pos expr) = evaluate expr
