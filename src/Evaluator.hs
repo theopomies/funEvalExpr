@@ -2,6 +2,7 @@ module Evaluator where
 
 import Parser (Expression(..), Term(..), Factor(..), Power(..))
 import Error ( EvalExprException(ComputingException) )
+import Control.Exception.Base (throw)
 
 evaluate :: Expression -> Double
 evaluate (Add lhs rhs) = evaluateTerm lhs + evaluateTerm rhs
