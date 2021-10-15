@@ -1,9 +1,13 @@
 module Main where
 
+import Args (parseArgs)
+import Control.Exception.Base (catch)
 import Display (display)
+import Error (exceptionHandler)
 import Evaluator (evaluate)
 import Lexer (tokenize)
 import Parser (parse)
+import System.Environment.Blank (getArgs)
 
 main :: IO ()
-main = display . evaluate . parse . tokenize $ "1+1"
+main = (getArgs >>= display . evaluate . parse . tokenize . parseArgs) `catch` exceptionHandler

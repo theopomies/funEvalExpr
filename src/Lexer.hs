@@ -1,5 +1,6 @@
 module Lexer (Token (..), Tokens, tokenize) where
 
+import Args (ExpressionString (ExpressionString))
 import Control.Exception.Base (throw)
 import Data.Char (isDigit)
 import Error (EvalExprException (LexingException))
@@ -18,17 +19,17 @@ data Token
 
 type Tokens = [Token]
 
-tokenize :: String -> Tokens
-tokenize [] = []
-tokenize ('+' : rest) = PlusSign : tokenize rest
-tokenize ('-' : rest) = MinusSign : tokenize rest
-tokenize ('*' : rest) = MultiplySign : tokenize rest
-tokenize ('/' : rest) = DivideSign : tokenize rest
-tokenize ('^' : rest) = PowerSign : tokenize rest
-tokenize ('(' : rest) = OpenParenthesis : tokenize rest
-tokenize (')' : rest) = CloseParenthesis : tokenize rest
-tokenize (' ' : rest) = tokenize rest
-tokenize str = tokenizeNumber (fst . extractMaybeDouble $ str) : tokenize (snd . extractMaybeDouble $ str)
+tokenize :: ExpressionString -> Tokens
+tokenize (ExpressionString []) = []
+tokenize (ExpressionString ('+' : rest)) = PlusSign : tokenize (ExpressionString rest)
+tokenize (ExpressionString ('-' : rest)) = MinusSign : tokenize (ExpressionString rest)
+tokenize (ExpressionString ('*' : rest)) = MultiplySign : tokenize (ExpressionString rest)
+tokenize (ExpressionString ('/' : rest)) = DivideSign : tokenize (ExpressionString rest)
+tokenize (ExpressionString ('^' : rest)) = PowerSign : tokenize (ExpressionString rest)
+tokenize (ExpressionString ('(' : rest)) = OpenParenthesis : tokenize (ExpressionString rest)
+tokenize (ExpressionString (')' : rest)) = CloseParenthesis : tokenize (ExpressionString rest)
+tokenize (ExpressionString (' ' : rest)) = tokenize (ExpressionString rest)
+tokenize (ExpressionString str) = tokenizeNumber (fst . extractMaybeDouble $ str) : tokenize (ExpressionString (snd . extractMaybeDouble $ str))
 
 tokenizeNumber :: Maybe Double -> Token
 tokenizeNumber (Just value) = Number value
