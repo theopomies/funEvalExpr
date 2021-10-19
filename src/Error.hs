@@ -1,7 +1,7 @@
-module Error where
+module Error (exceptionHandler, EvalExprException (..)) where
 
 import Control.Exception (Exception)
-import System.Exit (ExitCode (ExitFailure, ExitSuccess), exitSuccess, exitWith)
+import System.Exit (ExitCode (ExitFailure), exitSuccess, exitWith)
 
 data EvalExprException
   = ParsingException String
