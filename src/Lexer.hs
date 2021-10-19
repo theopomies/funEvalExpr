@@ -2,7 +2,7 @@ module Lexer (Token (..), Tokens, tokenize) where
 
 import Args (ExpressionString (ExpressionString))
 import Control.Exception.Base (throw)
-import Data.Char (isDigit)
+import Data.Char (isDigit, isSpace)
 import Error (EvalExprException (LexingException))
 import Text.Read (readMaybe)
 
@@ -28,8 +28,9 @@ tokenize (ExpressionString ('/' : rest)) = DivideSign : tokenize (ExpressionStri
 tokenize (ExpressionString ('^' : rest)) = PowerSign : tokenize (ExpressionString rest)
 tokenize (ExpressionString ('(' : rest)) = OpenParenthesis : tokenize (ExpressionString rest)
 tokenize (ExpressionString (')' : rest)) = CloseParenthesis : tokenize (ExpressionString rest)
-tokenize (ExpressionString (' ' : rest)) = tokenize (ExpressionString rest)
-tokenize (ExpressionString str) = tokenizeNumber (fst . extractMaybeDouble $ str) : tokenize (ExpressionString (snd . extractMaybeDouble $ str))
+tokenize (ExpressionString str@(char : rest))
+  | isSpace char = tokenize (ExpressionString rest)
+  | otherwise = tokenizeNumber (fst . extractMaybeDouble $ str) : tokenize (ExpressionString (snd . extractMaybeDouble $ str))
 
 tokenizeNumber :: Maybe Double -> Token
 tokenizeNumber (Just value) = Number value
