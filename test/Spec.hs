@@ -1,6 +1,8 @@
-import Test.Hspec ( hspec )
-import LexerSpec ( lexerSpec )
+import E2ESpec (e2eSpec)
+import LexerSpec (lexerSpec)
+import Test.Hspec (hspec)
 
 main :: IO ()
 main = hspec $ do
-    lexerSpec
+  lexerSpec
+  e2eSpec
