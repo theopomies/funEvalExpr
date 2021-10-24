@@ -14,11 +14,11 @@ data EvalExprException
 instance Exception EvalExprException
 
 exceptionHandler :: EvalExprException -> IO ()
-exceptionHandler (ParsingException text) = putStrLn text >> exitWith (ExitFailure 84)
-exceptionHandler (LexingException text) = putStrLn text >> exitWith (ExitFailure 84)
-exceptionHandler (ComputingException text) = putStrLn text >> exitWith (ExitFailure 84)
-exceptionHandler InvalidArgsException = putStrLn helpMessage >> exitWith (ExitFailure 84)
-exceptionHandler HelpException = putStrLn helpMessage >> exitSuccess
+exceptionHandler (ParsingException   text) = putStrLn text        >> exitWith (ExitFailure 84)
+exceptionHandler (LexingException    text) = putStrLn text        >> exitWith (ExitFailure 84)
+exceptionHandler (ComputingException text) = putStrLn text        >> exitWith (ExitFailure 84)
+exceptionHandler InvalidArgsException      = putStrLn helpMessage >> exitWith (ExitFailure 84)
+exceptionHandler HelpException             = putStrLn helpMessage >> exitSuccess
 
 helpMessage :: String
 helpMessage =
